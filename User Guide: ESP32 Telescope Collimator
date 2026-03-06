@@ -1,0 +1,65 @@
+User Guide: ESP32 Telescope Collimator
+This guide covers the setup, usage, and troubleshooting for your digital collimation tool.
+1. Initial Setup
+The firmware is configured specifically for AI-Thinker ESP32-CAM boards.
+Requirements:
+● Board: AI-Thinker ESP32-CAM (or clone like DORHEA)
+● Power: 5V Micro-USB (High Quality)
+● Settings in Arduino IDE:
+○ Board: "AI Thinker ESP32-CAM"
+○ PSRAM: "Enabled" (Crucial!)
+○ Partition Scheme: "Huge APP (3MB No OTA)"
+Flashing:
+1. Connect GPIO 0 to GND.
+2. Press Reset.
+3. Upload the code provided above.4. Remove the GPIO 0 wire and press Reset again.
+2. Connecting to the Tool
+This device operates as a Standalone Hotspot. It does not require a home router or internet
+access.
+1. Power On: Plug the device into a USB battery bank or port.
+2. Find Wi-Fi: On your phone, tablet, or laptop, search for the Wi-Fi network:
+○ SSID: ESP32_Collimator
+○ Password: (None / Open)
+3. Open Interface: Open your web browser and navigate to:
+○ http://192.168.4.1 (or http://collimator.local on some Apple devices).
+3. Using the Collimator
+The interface is designed for real-time adjustments while looking at your phone screen.
+The Display:
+● Video Feed: Live, hardware-accelerated B&W video stream (320x240 @ ~25FPS).
+● Crosshair (White): Indicates the geometric center of the sensor.
+● Circles (Green): Two concentric circles to help align your primary and secondary
+mirrors.
+The Controls:
+● Zoom: Uses digital scaling (CSS) to zoom into the video feed without losing the overlay
+alignment. Useful for fine-tuning.
+● Position (Center Offset): Moves the Crosshair and Circles together. Use this if your
+camera isn't perfectly centered in the 3D-printed case.
+○ Rst Button: Instantly resets the position to (0,0).
+● Inner Circle: Adjusts the radius of the solid green circle. Align this with your secondary
+mirror or donut.
+● Outer Circle: Adjusts the radius of the dashed green circle. Align this with your primary
+mirror clips or focuser drawtube.
+Auto-Save:
+● Any adjustment you make (Circle Size or Position) is automatically saved to the ESP32's
+flash memory. When you power it on next time, your settings will be exactly where you left
+them.
+4. Troubleshooting
+Symptom Cause SolutionBlack Screen / Spinning Bad handshake or PSRAM
+disabled.
+Ensure PSRAM is Enabled
+in Arduino Tools. Check
+USB power (must be 5V,
+not 3.3V).
+"Camera not supported" Ribbon cable loose. Unclip the black flap on the
+camera connector, reseat
+the ribbon cable firmly, and
+lock it.
+Laggy Video Wi-Fi interference. Move closer to the device.
+Ensure no other ESP32s are
+broadcasting on the same
+channel nearby.
+Glare / Whiteout Too much light. Since we removed the LED
+control, use external
+lighting or point the
+telescope at a brightly lit
+wall
