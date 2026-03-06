@@ -41,9 +41,6 @@ Adjust the diameter of the dashed green outer circle to match an outer bounding 
 *   **- Button:** Decreases the radius by 5 pixels per click.
 *   The current radius value is displayed. Minimum size is 5 pixels.
 
-### 5. Hardware Panel 💡
-*   **FLASH Button:** Toggles the extremely bright onboard LED flash located on the ESP32-CAM module. Click once to turn it on, click again to turn it off. Useful if working in pitch-black conditions. **Do not look directly at the LED!**
-
 ## Persistent Settings 💾
 This application utilizes the ESP32's non-volatile storage (NVS) memory. This means **all of your adjustments are saved automatically.**
 Every time you move the crosshairs, tweak a radius, or adjust a setting, it is immediately saved. If you lose power or disconnect the ESP32-CAM, the next time you turn it on and log in, your custom reticle positions and sizes will be exactly where you left them!

@@ -34,7 +34,6 @@ const char* HOSTNAME = "collimator";
 #define VSYNC_GPIO_NUM    25
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
-#define LED_FLASH_GPIO     4
 
 Preferences prefs;
 
@@ -130,7 +129,6 @@ static const char* index_html = R"rawliteral(
         <div class="box">Position<br><button onclick="move(0,-2)">UP</button><br><button onclick="move(-2,0)">L</button><button onclick="move(0,0,true)">Rst</button><button onclick="move(2,0)">R</button><br><button onclick="move(0,2)">DN</button></div>
         <div class="box">Inner Circle: <span id="r1Val">60</span><br><button onclick="rad(1,5)">+</button><button onclick="rad(1,-5)">-</button></div>
         <div class="box">Outer Circle: <span id="r2Val">100</span><br><button onclick="rad(2,5)">+</button><button onclick="rad(2,-5)">-</button></div>
-        <div class="box">Hardware<br><button onclick="fetch('/led')">FLASH</button></div>
     </div>
 <script>
     let z = 1.0, ox = 0, oy = 0, r1 = 60, r2 = 100;
@@ -162,8 +160,6 @@ static const char* index_html = R"rawliteral(
 
 void setup() {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); 
-    pinMode(LED_FLASH_GPIO, OUTPUT);
-    digitalWrite(LED_FLASH_GPIO, LOW);
     Serial.begin(115200);
 
     // Camera Configuration
@@ -241,13 +237,11 @@ void setup() {
     if (httpd_start(&server, &http_config) == ESP_OK) {
         httpd_uri_t index_uri = {"/", HTTP_GET, [](httpd_req_t* r){return httpd_resp_send(r,index_html,strlen(index_html));}, NULL};
         httpd_uri_t stream_uri = {"/stream", HTTP_GET, stream_handler, NULL};
-        httpd_uri_t led_uri = {"/led", HTTP_GET, [](httpd_req_t* r){digitalWrite(4, !digitalRead(4)); return httpd_resp_send(r,"OK",2);}, NULL};
         httpd_uri_t save_uri = {"/save", HTTP_GET, save_handler, NULL};
         httpd_uri_t status_uri = {"/status", HTTP_GET, status_handler, NULL};
         
         httpd_register_uri_handler(server, &index_uri);
         httpd_register_uri_handler(server, &stream_uri);
-        httpd_register_uri_handler(server, &led_uri);
         httpd_register_uri_handler(server, &save_uri);
         httpd_register_uri_handler(server, &status_uri);
     }
